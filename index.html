@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anish Rajkarnikar — UX/UI Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --surface:#F6F7F9;
+    --ink:#1B2430;
+    --muted:#66707E;
+    --line:#E4E7EC;
+    --navy:#132043;
+    --accent:#2454FF;
+    --accent-soft:#EAF0FF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+  body{background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; font-size:16px; line-height:1.65;}
+  a{color:inherit; text-decoration:none;}
+  ::selection{background:var(--accent); color:#fff;}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 40px;}
+  h1,h2,h3{font-family:'Sora',sans-serif; letter-spacing:-0.01em; font-weight:600; color:var(--navy);}
+
+  /* nav */
+  header{position:fixed; top:0; left:0; right:0; z-index:500; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--line);}
+  nav.wrap{display:flex; align-items:center; justify-content:space-between; height:68px;}
+  .logo{font-family:'Sora',sans-serif; font-weight:700; font-size:17px; color:var(--navy); display:flex; align-items:center; gap:10px;}
+  .logo .mark{width:30px; height:30px; border-radius:6px; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px;}
+  .navlinks{display:flex; gap:34px; font-size:14px; font-weight:500;}
+  .navlinks a{color:var(--muted); transition:color .2s ease;}
+  .navlinks a:hover{color:var(--navy);}
+  .nav-cta{background:var(--navy); color:#fff; padding:9px 18px; border-radius:6px; font-size:13.5px; font-weight:500; transition:background .2s ease;}
+  .nav-cta:hover{background:var(--accent);}
+  @media (max-width:760px){ .navlinks{display:none;} }
+
+  /* section framing */
+  section{padding:96px 0; border-bottom:1px solid var(--line); scroll-margin-top:84px;}
+  section:last-of-type{border-bottom:none;}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:48px;}
+  .sec-num{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--accent); font-weight:500;}
+  .sec-num::before{content:""; display:inline-block; width:22px; height:1px; background:var(--accent); margin-right:10px; vertical-align:middle;}
+  h2.sec-title{font-size:clamp(26px,3.6vw,34px);}
+
+  /* reveal */
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+  .reveal-stagger > *{opacity:0; transform:translateY(12px); transition:opacity .5s ease, transform .5s ease;}
+  .reveal-stagger.in > *{opacity:1; transform:translateY(0);}
+  .reveal-stagger.in > *:nth-child(1){transition-delay:0ms;}
+  .reveal-stagger.in > *:nth-child(2){transition-delay:60ms;}
+  .reveal-stagger.in > *:nth-child(3){transition-delay:120ms;}
+  .reveal-stagger.in > *:nth-child(4){transition-delay:180ms;}
+  .reveal-stagger.in > *:nth-child(5){transition-delay:240ms;}
+  .reveal-stagger.in > *:nth-child(6){transition-delay:300ms;}
+  .reveal-stagger.in > *:nth-child(7){transition-delay:360ms;}
+  .reveal-stagger.in > *:nth-child(8){transition-delay:420ms;}
+
+  /* hero */
+  .hero{padding-top:180px; padding-bottom:90px; position:relative; overflow:hidden;}
+  .hero-bg{
+    position:absolute; inset:0;
+    background-image:url('profile-bg.png');
+    background-size:cover;
+    background-position:center top;
+    opacity:0.95;
+    z-index:0;
+  }
+  .hero > .wrap{position:relative; z-index:1;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--accent); font-weight:500; text-transform:uppercase; letter-spacing:.06em; margin-bottom:12px;}
+  .hero h1{font-size:clamp(36px,5vw,52px); line-height:1.08; margin-bottom:14px;}
+  .hero h1 span{color:var(--accent);}
+  .hero p.lede{color:var(--muted); font-size:17px; max-width:600px; margin-bottom:26px;}
+  .contact-row{display:flex; flex-wrap:wrap; gap:14px 26px; font-size:14px; color:var(--muted);}
+  .contact-row a:hover{color:var(--accent);}
+  .cta-row{display:flex; gap:14px; margin-top:30px; flex-wrap:wrap;}
+  .btn-primary{background:var(--navy); color:#fff; padding:12px 24px; border-radius:6px; font-weight:500; font-size:14.5px; transition:background .2s ease;}
+  .btn-primary:hover{background:var(--accent);}
+  .btn-secondary{border:1px solid var(--line); padding:12px 24px; border-radius:6px; font-weight:500; font-size:14.5px; transition:border-color .2s ease, color .2s ease;}
+  .btn-secondary:hover{border-color:var(--navy); color:var(--navy);}
+
+  /* stats strip */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:60px;}
+  @media (max-width:700px){ .stats{grid-template-columns:repeat(2,1fr);} }
+  .stat{border-left:2px solid var(--accent); padding-left:16px;}
+  .stat .num{font-family:'Sora',sans-serif; font-size:28px; font-weight:700; color:var(--navy);}
+  .stat .lab{font-size:13px; color:var(--muted); margin-top:2px;}
+
+  /* experience */
+  .exp-item{display:grid; grid-template-columns:180px 1fr; gap:36px; padding:26px 0; border-top:1px solid var(--line);}
+  .exp-item:last-child{border-bottom:1px solid var(--line);}
+  @media (max-width:640px){ .exp-item{grid-template-columns:1fr; gap:6px;} }
+  .exp-date{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--muted); padding-top:3px;}
+  .exp-role{font-weight:600; font-size:18px; color:var(--navy); margin-bottom:2px; font-family:'Sora',sans-serif;}
+  .exp-co{color:var(--accent); font-size:14px; font-weight:500; margin-bottom:12px;}
+  .exp-list{list-style:none; color:var(--muted); font-size:14.5px;}
+  .exp-list li{position:relative; padding-left:18px; margin-bottom:6px;}
+  .exp-list li::before{content:"→"; position:absolute; left:0; color:var(--accent); font-size:12px; top:3px;}
+
+  /* portfolio */
+  .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media (max-width:760px){ .proj-grid{grid-template-columns:1fr;} }
+  .proj{border:1px solid var(--line); border-radius:10px; background:var(--bg); overflow:hidden; transition:box-shadow .25s ease, transform .25s ease, border-color .25s ease;}
+  .proj:hover{box-shadow:0 16px 32px -18px rgba(19,32,67,0.25); transform:translateY(-3px); border-color:#D6DCE5;}
+  .proj-band{height:8px; background:linear-gradient(90deg, var(--accent), var(--navy));}
+  .proj-body{padding:26px 26px 24px;}
+  .proj-cat{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px; font-weight:500;}
+  .proj-title{font-size:19px; margin-bottom:10px; font-family:'Sora',sans-serif; font-weight:600; color:var(--navy);}
+  .proj-desc{color:var(--muted); font-size:14px; margin-bottom:14px;}
+  .proj-contrib{list-style:none; color:var(--muted); font-size:13.5px; margin-bottom:16px;}
+  .proj-contrib li{position:relative; padding-left:16px; margin-bottom:5px;}
+  .proj-contrib li::before{content:"•"; position:absolute; left:0; color:var(--accent);}
+  .proj-meta{display:flex; flex-wrap:wrap; gap:8px; border-top:1px solid var(--line); padding-top:14px;}
+  .tag{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--navy); background:var(--surface); padding:4px 9px; border-radius:4px;}
+
+  /* skills */
+  .skill-cols{display:grid; grid-template-columns:repeat(2,1fr); gap:36px 48px;}
+  @media (max-width:640px){ .skill-cols{grid-template-columns:1fr;} }
+  .skill-group h3{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:500; margin-bottom:16px; font-family:'IBM Plex Mono',monospace;}
+  .pills{display:flex; flex-wrap:wrap; gap:9px;}
+  .pill{font-size:13.5px; padding:8px 14px; border:1px solid var(--line); border-radius:20px; background:var(--surface); color:var(--ink); transition:border-color .2s ease, background .2s ease;}
+  .pill:hover{border-color:var(--accent); background:var(--accent-soft); color:var(--accent);}
+
+  /* education */
+  .edu-card{border:1px solid var(--line); border-radius:10px; padding:28px 32px; background:var(--surface); display:grid; grid-template-columns:1fr auto; gap:20px; align-items:center;}
+  @media (max-width:600px){ .edu-card{grid-template-columns:1fr;} }
+  .edu-card .deg{font-family:'Sora',sans-serif; font-weight:600; font-size:18px; color:var(--navy);}
+  .edu-card .school{color:var(--muted); font-size:14px; margin-top:3px;}
+  .edu-card .yr{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--accent); background:var(--accent-soft); padding:6px 12px; border-radius:6px;}
+
+  /* explore */
+  .explore-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  @media (max-width:720px){ .explore-grid{grid-template-columns:repeat(2,1fr);} }
+  .explore-card{border:1px solid var(--line); padding:22px 20px; border-radius:10px; background:var(--bg); transition:border-color .2s ease, transform .2s ease;}
+  .explore-card:hover{border-color:var(--accent); transform:translateY(-2px);}
+  .explore-card .t{font-family:'Sora',sans-serif; font-weight:600; font-size:14.5px; color:var(--navy);}
+
+  /* footer / contact */
+  footer{padding:90px 0 50px;}
+  .contact-panel{background:var(--navy); border-radius:16px; padding:60px; color:#fff; text-align:left;}
+  @media (max-width:640px){ .contact-panel{padding:40px 28px;} }
+  .contact-panel h2{color:#fff; font-size:clamp(26px,4vw,36px); margin-bottom:14px;}
+  .contact-panel p{color:#B7C0D6; font-size:15.5px; max-width:520px; margin-bottom:30px;}
+  .contact-panel .btn-primary{background:var(--accent);}
+  .contact-panel .btn-primary:hover{background:#fff; color:var(--navy);}
+  .footer-links{display:flex; flex-wrap:wrap; gap:10px 24px; margin-top:34px; font-size:13.5px;}
+  .footer-links a{color:#B7C0D6; transition:color .2s ease;}
+  .footer-links a:hover{color:#fff;}
+  .footer-bottom{display:flex; justify-content:space-between; padding-top:30px; margin-top:30px; border-top:1px solid rgba(255,255,255,0.12); font-size:12.5px; color:#8390AC; flex-wrap:wrap; gap:10px;}
+
+  .back-top{position:fixed; bottom:24px; right:24px; z-index:400; width:44px; height:44px; border:1px solid var(--line); background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s ease, border-color .2s ease; box-shadow:0 6px 18px -8px rgba(19,32,67,0.25);}
+  .back-top.show{opacity:1; pointer-events:auto;}
+  .back-top:hover{border-color:var(--accent); color:var(--accent);}
+
+  /* contact modal */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(19,32,67,0.55); z-index:900;
+    display:flex; align-items:center; justify-content:center; padding:20px;
+    opacity:0; pointer-events:none; transition:opacity .25s ease;
+  }
+  .modal-overlay.open{opacity:1; pointer-events:auto;}
+  .modal-box{
+    background:#fff; border-radius:14px; width:100%; max-width:440px;
+    padding:36px; box-shadow:0 30px 60px -20px rgba(19,32,67,0.4);
+    transform:translateY(14px) scale(0.98); transition:transform .25s ease;
+  }
+  .modal-overlay.open .modal-box{transform:translateY(0) scale(1);}
+  .modal-box h3{font-size:22px; margin-bottom:6px;}
+  .modal-box .sub{color:var(--muted); font-size:14px; margin-bottom:24px;}
+  .field{margin-bottom:18px;}
+  .field label{display:block; font-size:13px; font-weight:500; color:var(--navy); margin-bottom:6px;}
+  .field input, .field textarea{
+    width:100%; padding:11px 13px; border:1px solid var(--line); border-radius:7px;
+    font-family:'Inter',sans-serif; font-size:14.5px; color:var(--ink); background:var(--surface);
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .field input:focus, .field textarea:focus{outline:none; border-color:var(--accent); background:#fff;}
+  .field textarea{resize:vertical; min-height:80px;}
+  .modal-actions{display:flex; gap:12px; margin-top:8px;}
+  .modal-actions .btn-primary{border:none; cursor:pointer; flex:1;}
+  .modal-close{
+    position:absolute; top:18px; right:18px; width:30px; height:30px; border-radius:50%;
+    border:1px solid var(--line); background:#fff; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; color:var(--muted); font-size:16px; transition:border-color .2s ease, color .2s ease;
+  }
+  .modal-close:hover{border-color:var(--accent); color:var(--accent);}
+  .modal-box{position:relative;}
+  .form-note{font-size:12px; color:var(--muted); margin-top:14px;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo"><span class="mark">AR</span>Anish Rajkarnikar</div>
+    <div class="navlinks">
+      <a href="#work">Experience</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#skills">Skills</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-bg"></div>
+    <div class="wrap">
+      <div class="reveal in">
+        <div>
+          <div class="eyebrow">UX / UI Designer · Kathmandu, Nepal</div>
+          <h1>Designing intuitive products for<br><span>AI-powered platforms.</span></h1>
+          <p class="lede">I help teams turn complex ideas into clear, usable interfaces — through research, wireframing, prototyping, and design systems that scale across products.</p>
+          <div class="cta-row">
+            <a class="btn-primary" href="javascript:void(0)" onclick="openContactModal()">Get in touch</a>
+            <a class="btn-secondary" href="#portfolio">View portfolio</a>
+          </div>
+          <div class="contact-row" style="margin-top:26px;">
+            <a href="mailto:anish.rajkarnikar4@gmail.com">anish.rajkarnikar4@gmail.com</a>
+            <span>+977 9848622244</span>
+            <a href="https://linkedin.com/in/anish-rajkarnikar" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://dribbble.com/Anishrajkarnikar" target="_blank" rel="noopener">Dribbble</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats reveal-stagger in">
+        <div class="stat"><div class="num">9+</div><div class="lab">Years in design &amp; development</div></div>
+        <div class="stat"><div class="num">6</div><div class="lab">Companies &amp; teams</div></div>
+        <div class="stat"><div class="num">10+</div><div class="lab">Shipped products &amp; sites</div></div>
+        <div class="stat"><div class="num">3+</div><div class="lab">Years designing AI products</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="sec-num">01</span><h2 class="sec-title">Work Experience</h2></div>
+
+      <div class="reveal">
+        <div class="exp-item">
+          <div class="exp-date">Jan 2023 — Present</div>
+          <div>
+            <div class="exp-role">UX/UI Designer</div>
+            <div class="exp-co">Fusemachines</div>
+            <ul class="exp-list">
+              <li>Designed AI-powered web applications with intuitive, user-centered experiences.</li>
+              <li>Created user flows, wireframes, prototypes, and responsive UI designs in Figma.</li>
+              <li>Collaborated with cross-functional teams to deliver scalable, consistent digital products.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-date">Sept 2020 — Dec 2022</div>
+          <div>
+            <div class="exp-role">Graphic &amp; Web Designer</div>
+            <div class="exp-co">Fusemachines</div>
+            <ul class="exp-list">
+              <li>Designed marketing assets, websites, and digital experiences for AI and enterprise solutions.</li>
+              <li>Created responsive web designs, branding materials, and visual content across platforms.</li>
+              <li>Collaborated with cross-functional teams to deliver engaging, consistent user experiences.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-date">Dec 2018 — Aug 2020</div>
+          <div>
+            <div class="exp-role">Front End Developer</div>
+            <div class="exp-co">Catch Themes</div>
+            <ul class="exp-list">
+              <li>Developed responsive WordPress themes by converting PSD designs into pixel-perfect websites.</li>
+              <li>Built user-friendly interfaces using HTML, CSS, JavaScript, and WordPress.</li>
+              <li>Worked closely with designers to ensure seamless implementation and responsive performance.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-date">Apr 2017 — Nov 2018</div>
+          <div>
+            <div class="exp-role">Web Designer</div>
+            <div class="exp-co">Techtatva Pvt Ltd</div>
+            <ul class="exp-list">
+              <li>Designed responsive websites with a focus on usability and modern UI.</li>
+              <li>Created web layouts, graphics, and interactive user interfaces.</li>
+              <li>Collaborated with developers to deliver functional and visually appealing websites.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-date">Jan 2017 — Mar 2017</div>
+          <div>
+            <div class="exp-role">Graphic Designer</div>
+            <div class="exp-co">Nepali Paisa</div>
+            <ul class="exp-list">
+              <li>Designed social media creatives and branding materials.</li>
+              <li>Created visual graphics for stock market information.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-date">Oct 2016 — Dec 2016</div>
+          <div>
+            <div class="exp-role">Graphic Designer</div>
+            <div class="exp-co">StyleGags.com</div>
+            <ul class="exp-list">
+              <li>Designed digital graphics and promotional content using Adobe Creative Suite.</li>
+              <li>Produced creative visual assets for web, social media, and marketing campaigns.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="sec-num">02</span><h2 class="sec-title">Selected Work</h2></div>
+
+      <div class="proj-grid reveal-stagger">
+        <div class="proj">
+          <div class="proj-band"></div>
+          <div class="proj-body">
+            <div class="proj-cat">UX / UI Design</div>
+            <div class="proj-title">Ecommerce Signals</div>
+            <p class="proj-desc">An AI-powered retail intelligence platform that helps businesses analyze customer reviews, ratings, and return data to uncover product insights.</p>
+            <ul class="proj-contrib">
+              <li>Led end-to-end UX/UI design for key product features.</li>
+              <li>Designed user flows, wireframes, and interactive prototypes for analytics dashboards.</li>
+              <li>Built scalable UI components with Figma design systems.</li>
+            </ul>
+            <div class="proj-meta"><span class="tag">Figma</span><span class="tag">10 months</span></div>
+          </div>
+        </div>
+
+        <div class="proj">
+          <div class="proj-band"></div>
+          <div class="proj-body">
+            <div class="proj-cat">UX / UI Design</div>
+            <div class="proj-title">Squadery Connect App</div>
+            <p class="proj-desc">A talent platform connecting skilled technology professionals with global contract opportunities via an AI-powered matching system.</p>
+            <ul class="proj-contrib">
+              <li>Designed responsive experiences for web and mobile.</li>
+              <li>Simplified candidate onboarding and profile management.</li>
+              <li>Created reusable UI components and high-fidelity designs.</li>
+            </ul>
+            <div class="proj-meta"><span class="tag">Figma</span><span class="tag">1 yr 8 months</span></div>
+          </div>
+        </div>
+
+        <div class="proj">
+          <div class="proj-band"></div>
+          <div class="proj-body">
+            <div class="proj-cat">Web Design</div>
+            <div class="proj-title">Times Brandcast</div>
+            <p class="proj-desc">A microsite platform enabling sales teams to create personalized, interactive experiences for enterprise clients.</p>
+            <ul class="proj-contrib">
+              <li>Designed responsive microsites for marketing campaigns.</li>
+              <li>Customized layouts and branding per client requirements.</li>
+            </ul>
+            <div class="proj-meta"><span class="tag">Brandcast</span><span class="tag">11 months</span></div>
+          </div>
+        </div>
+
+        <div class="proj">
+          <div class="proj-band"></div>
+          <div class="proj-body">
+            <div class="proj-cat">WordPress Theme Development</div>
+            <div class="proj-title">Catch Themes</div>
+            <p class="proj-desc">Developed responsive WordPress themes by converting PSD/Figma designs into pixel-perfect, cross-browser-compatible websites.</p>
+            <ul class="proj-contrib">
+              <li>Built themes with HTML, CSS, JavaScript, Bootstrap, SASS.</li>
+              <li>Partnered with designers on responsive layouts.</li>
+            </ul>
+            <div class="proj-meta"><span class="tag">Bootstrap</span><span class="tag">SASS</span><span class="tag">1.5 years</span></div>
+          </div>
+        </div>
+
+        <div class="proj">
+          <div class="proj-band"></div>
+          <div class="proj-body">
+            <div class="proj-cat">Web Design &amp; Development</div>
+            <div class="proj-title">Machan County Villa</div>
+            <p class="proj-desc">A responsive resort website showcasing accommodations and natural surroundings, focused on intuitive navigation and mobile responsiveness.</p>
+            <ul class="proj-contrib">
+              <li>Designed and developed the full site end to end.</li>
+            </ul>
+            <div class="proj-meta"><span class="tag">Bootstrap</span><span class="tag">2 months</span></div>
+          </div>
+        </div>
+
+        <div class="proj">
+          <div class="proj-band"></div>
+          <div class="proj-body">
+            <div class="proj-cat">Website Design</div>
+            <div class="proj-title">Neydo Tashi Choeling Monastery Guest House</div>
+            <p class="proj-desc">A clean, informative website for a monastery guest house, emphasizing peaceful aesthetics and clear navigation.</p>
+            <ul class="proj-contrib">
+              <li>Designed the full site identity and page layouts in Figma.</li>
+            </ul>
+            <div class="proj-meta"><span class="tag">Figma</span><span class="tag">1 month</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="sec-num">03</span><h2 class="sec-title">Skills &amp; Tools</h2></div>
+      <div class="skill-cols">
+        <div class="skill-group reveal">
+          <h3>Design Tools</h3>
+          <div class="pills reveal-stagger">
+            <span class="pill">Figma</span><span class="pill">Photoshop</span><span class="pill">Illustrator</span><span class="pill">InDesign</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h3>UI / UX Skills</h3>
+          <div class="pills reveal-stagger">
+            <span class="pill">Design</span><span class="pill">User Research</span><span class="pill">Wireframing</span><span class="pill">Prototyping</span><span class="pill">Information Architecture</span><span class="pill">User Flow</span><span class="pill">Design Systems</span><span class="pill">Responsive Design</span><span class="pill">Components</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h3>Development</h3>
+          <div class="pills reveal-stagger">
+            <span class="pill">HTML</span><span class="pill">CSS</span><span class="pill">JavaScript</span><span class="pill">WordPress</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h3>Others</h3>
+          <div class="pills reveal-stagger">
+            <span class="pill">Blender 3D</span><span class="pill">Premiere Pro</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="sec-num">04</span><h2 class="sec-title">Education</h2></div>
+      <div class="edu-card reveal">
+        <div>
+          <div class="deg">Bachelor in Information Management</div>
+          <div class="school">National College of Computer Studies (NCCS)</div>
+        </div>
+        <div class="yr">2012 — 2016</div>
+      </div>
+      <div class="edu-card reveal" style="margin-top:16px;">
+        <div>
+          <div class="deg">+2 — Higher Secondary</div>
+          <div class="school">National College of Computer Studies (NCCS)</div>
+        </div>
+        <div class="yr">2010 — 2012</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPLORE -->
+  <section id="explore">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="sec-num">05</span><h2 class="sec-title">Also Explore</h2></div>
+      <div class="explore-grid reveal-stagger">
+        <a class="explore-card" href="https://dribbble.com/Anishrajkarnikar" target="_blank" rel="noopener"><div class="t">Logo Designs</div></a>
+        <a class="explore-card" href="https://dribbble.com/Anishrajkarnikar" target="_blank" rel="noopener"><div class="t">Graphic Designs</div></a>
+        <a class="explore-card" href="https://www.youtube.com/@maggotanish666" target="_blank" rel="noopener"><div class="t">Videos</div></a>
+        <a class="explore-card" href="https://500px.com/p/anishrajkarnikar" target="_blank" rel="noopener"><div class="t">Photography</div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <footer id="contact">
+    <div class="wrap">
+      <div class="contact-panel reveal">
+        <h2>Let's build something usable, together.</h2>
+        <p>Available for full-time roles and select freelance projects. Reach out and I'll get back to you within a day.</p>
+        <a class="btn-primary" href="javascript:void(0)" onclick="openContactModal()">Get in touch</a>
+        <div class="footer-links">
+          <a href="tel:+9779848622244">+977 9848622244</a>
+          <a href="https://linkedin.com/in/anish-rajkarnikar" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://facebook.com/Anishrajkarnikar" target="_blank" rel="noopener">Facebook</a>
+          <a href="https://dribbble.com/Anishrajkarnikar" target="_blank" rel="noopener">Dribbble</a>
+          <a href="https://instagram.com/anish_rajkarnikar_" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://500px.com/p/anishrajkarnikar" target="_blank" rel="noopener">500px</a>
+          <a href="https://www.youtube.com/@maggotanish666" target="_blank" rel="noopener">YouTube</a>
+        </div>
+        <div class="footer-bottom">
+          <span>Basantapur, Kathmandu, Nepal</span>
+          <span>© 2026 Anish Rajkarnikar</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<div class="modal-overlay" id="contactModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeContactModal()">✕</button>
+    <h3>Get in touch</h3>
+    <div class="sub">Send a message directly — it goes straight to Anish's inbox.</div>
+    <form id="contactForm" onsubmit="return sendContactForm(event)">
+      <input type="text" name="company" id="hp_field" style="position:absolute; left:-9999px;" tabindex="-1" autocomplete="off">
+      <div class="field">
+        <label for="fromEmail">Your email</label>
+        <input type="email" id="fromEmail" placeholder="you@company.com" required>
+      </div>
+      <div class="field">
+        <label for="subjectField">Subject</label>
+        <input type="text" id="subjectField" placeholder="Project inquiry" required>
+      </div>
+      <div class="field">
+        <label for="messageField">Message <span style="color:var(--muted); font-weight:400;">(optional)</span></label>
+        <textarea id="messageField" placeholder="Tell me a bit about what you need..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary" id="submitBtn">Send message</button>
+      </div>
+      <div class="form-note" id="formStatus">This message is sent directly to anish.rajkarnikar4@gmail.com.</div>
+    </form>
+  </div>
+</div>
+
+<div class="back-top" id="backtop">↑</div>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach(el=>io.observe(el));
+
+  const backtop = document.getElementById('backtop');
+  window.addEventListener('scroll', ()=>{
+    backtop.classList.toggle('show', window.scrollY > 600);
+  });
+  backtop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+
+  // contact modal
+  const modal = document.getElementById('contactModal');
+  function openContactModal(){
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeContactModal(){
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  modal.addEventListener('click', (e)=>{ if(e.target === modal) closeContactModal(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeContactModal(); });
+
+  function sendContactForm(e){
+    e.preventDefault();
+    const fromEmail = document.getElementById('fromEmail').value.trim();
+    const subject = document.getElementById('subjectField').value.trim();
+    const message = document.getElementById('messageField').value.trim();
+    const submitBtn = document.getElementById('submitBtn');
+    const status = document.getElementById('formStatus');
+
+    // ⚠️ Replace with the URL where you uploaded contact.php, e.g.
+    // 'https://yourdomain.com/contact.php'
+    const CONTACT_ENDPOINT = 'contact.php';
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    status.textContent = '';
+    status.style.color = 'var(--muted)';
+
+    const fd = new FormData();
+    fd.append('email', fromEmail);
+    fd.append('subject', subject);
+    fd.append('message', message);
+    fd.append('company', document.getElementById('hp_field').value); // honeypot
+
+    fetch(CONTACT_ENDPOINT, {
+      method: 'POST',
+      body: fd
+    })
+    .then(res => res.json().then(data => ({ ok: res.ok, data })))
+    .then(({ ok, data }) => {
+      if (ok && data.success) {
+        status.style.color = '#1a7f37';
+        status.textContent = 'Message sent — thanks for reaching out! I\'ll get back to you soon.';
+        document.getElementById('contactForm').reset();
+        submitBtn.textContent = 'Sent ✓';
+        setTimeout(() => { closeContactModal(); submitBtn.disabled = false; submitBtn.textContent = 'Send message'; }, 1800);
+      } else {
+        throw new Error(data.message || 'Request failed');
+      }
+    })
+    .catch((err) => {
+      status.style.color = '#C0362C';
+      status.textContent = 'Something went wrong — please email anish.rajkarnikar4@gmail.com directly instead.';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send message';
+    });
+
+    return false;
+  }
+</script>
+
+</body>
+</html>
